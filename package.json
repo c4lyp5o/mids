@@ -1,0 +1,38 @@
+{
+  "name": "mids",
+  "module": "server.ts",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun run build:server && bun run build:client",
+    "build:server": "bun run build:tsc",
+    "build:client": "bun run build:tsc -- --project client/tsconfig.json",
+    "build:tsc": "tsc --project server/tsconfig.json",
+    "dev:server": "bun run --watch server.ts",
+    "dev:client": "cd client && bun run dev",
+    "dev:tsc": "tsc --project server/tsconfig.json --watch",
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:client\""
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.3",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/multer": "^1.4.13",
+    "concurrently": "^9.1.2"
+  },
+  "peerDependencies": {
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/mongoose": "^5.11.97",
+    "cors": "^2.8.5",
+    "deadslog": "^1.2.2",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.0",
+    "multer": "^2.0.1",
+    "swr": "^2.3.3"
+  }
+}
