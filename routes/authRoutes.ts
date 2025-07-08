@@ -1,23 +1,27 @@
-import { Router } from 'express';
-import type { Request, Response, NextFunction } from 'express';
+import { Router } from "express";
+import type { Request, Response, NextFunction } from "express";
 import {
-  loginMosque,
-  validateMosqueToken,
-} from '../controllers/authControllers';
+	loginMosque,
+	validateMosqueToken,
+} from "../controllers/authControllers";
 
 const router = Router();
 
 router.post(
-  '/login',
-  loginMosque as (req: Request, res: Response, next: NextFunction) => any
+	"/login",
+	loginMosque as (
+		req: Request,
+		res: Response,
+		next: NextFunction,
+	) => Promise<void>,
 );
 router.get(
-  '/validate',
-  validateMosqueToken as (
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) => any
+	"/validate",
+	validateMosqueToken as (
+		req: Request,
+		res: Response,
+		next: NextFunction,
+	) => void,
 );
 
 export default router;
