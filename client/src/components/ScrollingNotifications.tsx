@@ -1,28 +1,28 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface ScrollingNotificationsProps {
-  notifications: string[];
+	notifications: string[];
 }
 
 const ScrollingNotifications = ({
-  notifications,
+	notifications,
 }: ScrollingNotificationsProps) => {
-  const [isPaused, setIsPaused] = useState(false);
-  const [animationDuration, setAnimationDuration] = useState(30);
+	const [isPaused, setIsPaused] = useState(false);
+	const [animationDuration, setAnimationDuration] = useState(30);
 
-  // Calculate animation duration based on content length for consistent speed
-  useEffect(() => {
-    const totalLength = notifications.join(' • ').length;
-    const baseDuration = Math.max(15, Math.min(60, totalLength * 0.1));
-    setAnimationDuration(baseDuration);
-  }, [notifications]);
+	// Calculate animation duration based on content length for consistent speed
+	useEffect(() => {
+		const totalLength = notifications.join(" • ").length;
+		const baseDuration = Math.max(15, Math.min(60, totalLength * 0.1));
+		setAnimationDuration(baseDuration);
+	}, [notifications]);
 
-  // Don't render if no notifications
-  if (!notifications || notifications.length === 0) {
-    return null;
-  }
+	// Don't render if no notifications
+	if (!notifications || notifications.length === 0) {
+		return null;
+	}
 
-  const scrollingStyle = `
+	const scrollingStyle = `
     @keyframes scroll-rtl {
       0% { transform: translateX(100%); }
       100% { transform: translateX(-100%); }
@@ -30,7 +30,7 @@ const ScrollingNotifications = ({
     
     .scrolling-text {
       animation: scroll-rtl ${animationDuration}s linear infinite;
-      animation-play-state: ${isPaused ? 'paused' : 'running'};
+      animation-play-state: ${isPaused ? "paused" : "running"};
       white-space: nowrap;
       transition: all 0.3s ease;
     }
@@ -46,25 +46,25 @@ const ScrollingNotifications = ({
     }
   `;
 
-  const formatNotifications = () => {
-    const joinedNotifications = notifications
-      .filter((n) => n.trim() !== '') // Filter empty notifications
-      .join(' 🔔 ');
+	const formatNotifications = () => {
+		const joinedNotifications = notifications
+			.filter((n) => n.trim() !== "") // Filter empty notifications
+			.join(" 🔔 ");
 
-    // Repeat content multiple times for seamless loop
-    return `${joinedNotifications} 🔔 ${joinedNotifications} 🔔 ${joinedNotifications}`;
-  };
+		// Repeat content multiple times for seamless loop
+		return `${joinedNotifications} 🔔 ${joinedNotifications} 🔔 ${joinedNotifications}`;
+	};
 
-  return (
-    <>
-      <style>{scrollingStyle}</style>
-      <div className='fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 text-white py-4 md:py-6 overflow-hidden shadow-2xl border-t-4 border-emerald-500'>
-        {/* Background Pattern */}
-        <div className='absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent'></div>
+	return (
+		<>
+			<style>{scrollingStyle}</style>
+			<div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-emerald-800 via-emerald-700 to-emerald-800 text-white py-4 md:py-6 overflow-hidden shadow-2xl border-t-4 border-emerald-500">
+				{/* Background Pattern */}
+				<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
 
-        {/* Content Container */}
-        <div className='relative'>
-          {/* Pause Button
+				{/* Content Container */}
+				<div className="relative">
+					{/* Pause Button
           <button
             onClick={() => setIsPaused(!isPaused)}
             className='absolute left-4 top-1/2 transform -translate-y-1/2 z-10 bg-emerald-600/80 hover:bg-emerald-500 text-white p-2 rounded-full transition-all duration-200 backdrop-blur-sm border border-white/20'
@@ -89,28 +89,28 @@ const ScrollingNotifications = ({
             )}
           </button> */}
 
-          {/* Scrolling Text */}
-          <div className='scrolling-text text-xl md:text-2xl lg:text-3xl font-medium pl-16 pr-4'>
-            <span className='inline-flex items-center gap-2'>
-              {formatNotifications()}
-            </span>
-          </div>
+					{/* Scrolling Text */}
+					<div className="scrolling-text text-xl md:text-2xl lg:text-3xl font-medium pl-16 pr-4">
+						<span className="inline-flex items-center gap-2">
+							{formatNotifications()}
+						</span>
+					</div>
 
-          {/* Fade Effects */}
-          <div className='absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-emerald-800 to-transparent pointer-events-none'></div>
-          <div className='absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-emerald-800 to-transparent pointer-events-none'></div>
-        </div>
+					{/* Fade Effects */}
+					<div className="absolute top-0 left-0 w-20 h-full bg-gradient-to-r from-emerald-800 to-transparent pointer-events-none" />
+					<div className="absolute top-0 right-0 w-20 h-full bg-gradient-to-l from-emerald-800 to-transparent pointer-events-none" />
+				</div>
 
-        {/* Notification Count Badge */}
-        {/* {notifications.length > 0 && (
+				{/* Notification Count Badge */}
+				{/* {notifications.length > 0 && (
           <div className='absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white px-3 py-1 rounded-full text-sm font-medium border border-white/30'>
             {notifications.length} notification
             {notifications.length !== 1 ? 's' : ''}
           </div>
         )} */}
-      </div>
-    </>
-  );
+			</div>
+		</>
+	);
 };
 
 export default ScrollingNotifications;
