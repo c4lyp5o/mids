@@ -1,41 +1,47 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+
 import kaabaImage from "../assets/images/kaaba-bg.jpg";
+
+const PHASE_DURATION_SECONDS = 600;
 
 const PrayerNow = () => {
 	const { mosqueId } = useParams<{ mosqueId: string }>();
 	const navigate = useNavigate();
 	const [phase, setPhase] = useState<"countdown" | "prayer">("countdown");
-	const [timeLeft, setTimeLeft] = useState(5); // 10 minutes in seconds
+	const [timeLeft, setTimeLeft] = useState(PHASE_DURATION_SECONDS);
 
 	useEffect(() => {
-		let timer: NodeJS.Timeout;
+		// Only set up the timer if timeLeft > 0
+		if (timeLeft > 0) {
+			const timer = setInterval(() => {
+				setTimeLeft((prev) => prev - 1);
+			}, 1000);
 
-		if (timeLeft === 0) {
+			return () => clearInterval(timer);
+		} else {
+			// Handle phase change when timeLeft reaches 0
 			if (phase === "countdown") {
 				setPhase("prayer");
-				setTimeLeft(5); // Reset for prayer phase
+				setTimeLeft(PHASE_DURATION_SECONDS);
 			} else {
 				navigate(`/landing/${mosqueId}`);
 			}
-		} else {
-			timer = setInterval(() => {
-				setTimeLeft((prev) => prev - 1);
-			}, 1000);
 		}
-
-		return () => {
-			if (timer) clearInterval(timer);
-		};
 	}, [timeLeft, phase, mosqueId, navigate]);
 
-	const formatTime = (seconds: number): string => {
+	const formatTime = useCallback((seconds: number): string => {
 		const minutes = Math.floor(seconds / 60);
 		const remainingSeconds = seconds % 60;
 		return `${minutes.toString().padStart(2, "0")}:${remainingSeconds
 			.toString()
 			.padStart(2, "0")}`;
-	};
+	}, []);
+
+	if (!mosqueId) {
+		navigate("/");
+		return;
+	}
 
 	return (
 		<div
@@ -56,7 +62,11 @@ const PrayerNow = () => {
 						<h1 className="text-5xl font-bold text-white mb-8 drop-shadow-lg">
 							Prayer Time Starting Soon
 						</h1>
-						<div className="text-9xl font-bold text-white font-mono mb-6 drop-shadow-lg">
+						<div
+							className="text-9xl font-bold text-white font-mono mb-6 drop-shadow-lg"
+							role="timer"
+							aria-live="polite"
+						>
 							{formatTime(timeLeft)}
 						</div>
 						<p className="text-white text-2xl drop-shadow-lg">
