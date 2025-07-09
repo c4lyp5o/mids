@@ -1,17 +1,19 @@
-import React from "react";
+import { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route } from "react-router";
 
 import ProtectedRoute from "./pages/ProtectedRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
 import LoadingSpinner from "./components/LoadingSpinner";
 
-const Login = React.lazy(() => import("./pages/Login"));
-const Interstitial = React.lazy(() => import("./pages/Interstitial"));
-const Landing = React.lazy(() => import("./pages/Landing"));
-const PrayerNow = React.lazy(() => import("./pages/PrayerNow"));
-const Settings = React.lazy(() => import("./pages/Settings"));
+const Login = lazy(() => import("./pages/Login"));
+const Interstitial = lazy(() => import("./pages/Interstitial"));
+const Landing = lazy(() => import("./pages/Landing"));
+const PrayerNow = lazy(() => import("./pages/PrayerNow"));
+const Settings = lazy(() => import("./pages/Settings"));
+const ClockDemo = lazy(() => import("./pages/ClockDemo"));
+const InfoDemo = lazy(() => import("./pages/InfoDemo"));
 
-const NotFound = React.lazy(() => import("./pages/NotFound"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 function App() {
 	return (
@@ -26,45 +28,69 @@ function App() {
 					<Route
 						index
 						element={
-							<React.Suspense fallback={<LoadingSpinner />}>
+							<Suspense fallback={<LoadingSpinner />}>
 								<Login />
-							</React.Suspense>
+							</Suspense>
 						}
 					/>
 					<Route
 						path="/interstitial/:mosqueId"
 						element={
-							<React.Suspense fallback={<LoadingSpinner />}>
+							<Suspense fallback={<LoadingSpinner />}>
 								<Interstitial />
-							</React.Suspense>
+							</Suspense>
 						}
 					/>
 					<Route
 						path="/landing/:mosqueId"
 						element={
-							<React.Suspense fallback={<LoadingSpinner />}>
+							<Suspense fallback={<LoadingSpinner />}>
 								<Landing />
-							</React.Suspense>
+							</Suspense>
 						}
 					/>
 					<Route
 						path="/prayernow/:mosqueId"
 						element={
-							<React.Suspense fallback={<LoadingSpinner />}>
+							<Suspense fallback={<LoadingSpinner />}>
 								<PrayerNow />
-							</React.Suspense>
+							</Suspense>
 						}
 					/>
 					<Route
 						path="/settings/:mosqueId"
 						element={
-							<React.Suspense fallback={<LoadingSpinner />}>
+							<Suspense fallback={<LoadingSpinner />}>
 								<ProtectedRoute>
 									<Settings />
 								</ProtectedRoute>
-							</React.Suspense>
+							</Suspense>
 						}
 					/>
+					{import.meta.env.MODE !== "production" && (
+						<>
+							<Route
+								path="/clock-demo"
+								element={
+									<Suspense fallback={<LoadingSpinner />}>
+										<ProtectedRoute>
+											<ClockDemo />
+										</ProtectedRoute>
+									</Suspense>
+								}
+							/>
+							<Route
+								path="/info-demo"
+								element={
+									<Suspense fallback={<LoadingSpinner />}>
+										<ProtectedRoute>
+											<InfoDemo />
+										</ProtectedRoute>
+									</Suspense>
+								}
+							/>
+						</>
+					)}
 					<Route path="*" element={<NotFound />} />
 				</Routes>
 			</BrowserRouter>
