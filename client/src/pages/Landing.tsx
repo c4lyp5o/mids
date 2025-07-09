@@ -147,9 +147,7 @@ const Landing = () => {
 			);
 			const seconds_remaining = Math.floor((diff % (1000 * 60)) / 1000);
 
-			// If countdown reaches zero (with 1-minute buffer for preparation)
-			if (diff <= 60000) {
-				// 60000ms = 1 minute
+			if (diff <= 0) {
 				navigate(`/prayernow/${mosqueId}`);
 				return undefined;
 			}
