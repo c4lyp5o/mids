@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 interface ScrollingNotificationsProps {
 	notifications: string[];
@@ -90,7 +90,11 @@ const ScrollingNotifications = ({
           </button> */}
 
 					{/* Scrolling Text */}
-					<div className="scrolling-text text-xl md:text-2xl lg:text-3xl font-medium pl-16 pr-4">
+					<div
+						className="scrolling-text text-xl md:text-2xl lg:text-3xl font-medium pl-16 pr-4"
+						role="marquee"
+						aria-live="polite"
+					>
 						<span className="inline-flex items-center gap-2">
 							{formatNotifications()}
 						</span>
