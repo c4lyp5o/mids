@@ -36,7 +36,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ mosqueData }) => {
 				}
 				return (prevIndex + 1) % mosqueData.images.length;
 			});
-		}, 5000); // Changed to 5 seconds for better UX
+		}, 10000);
 
 		return () => clearInterval(interval);
 	}, [mosqueData]);
@@ -59,7 +59,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ mosqueData }) => {
 	}
 
 	return (
-		<div className="relative h-[567px] mb-2 overflow-hidden rounded-xl shadow-2xl group">
+		<div className="relative h-[725px] mb-2 overflow-hidden rounded-xl shadow-2xl group">
 			{mosqueData.images.map((img, index) => (
 				<div
 					key={img._id}
